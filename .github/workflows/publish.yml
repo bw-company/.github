@@ -1,0 +1,19 @@
+name: Publish
+
+on:
+  workflow_call:
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cho0o0/calver-release-action@2022.12.13.6
+        with:
+          dry_run: false
+          # secrets.GITHUB_TOKEN cannot trigger other workflows
+          github_token: ${{secrets.HENRIBOT_UPDATE_API_TOKEN}}
+          generate_release_notes: true
+          timezone: 'Asia/Tokyo'
